@@ -24,23 +24,27 @@ public class ProductRestController {
 	@Autowired
 	private ProductDAO productDAO;
 
+	// product model entity sinifindekileri butun hamisini qaytarir
 	@GetMapping
 	public List<Product> getAllProducts() {
 		return productDAO.findAll();
 	}
-
-	@PostMapping(path = "/save-products")
+      
+	// yeni mehsul qeydiyyat edir(save edir)
+	@PostMapping(path = "/save-new-product")
 	public Product newProduct(@RequestBody Product product) {
 		return productDAO.save(product);
 	}
-
+    
+	//id-sine gore product model entity sinifindeki melumatlari qaytarir
 	@GetMapping("/{id}")
 	public Product getById(@PathVariable Integer id) {
 		return productDAO.findById(id).get();
 	}
-
+     
+	//ide gore product model entity sinifin ichindekileri update edir
 	@PutMapping("/{id}")
-	public Product update(@PathVariable Integer id, @RequestBody Product updatedProduct) {
+	public Product updateProduct(@PathVariable Integer id, @RequestBody Product updatedProduct) {
 		Optional<Product> optionalProduct = productDAO.findById(id);
 		if (optionalProduct.isPresent()) {
 			Product product = optionalProduct.get();
@@ -59,7 +63,8 @@ public class ProductRestController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
 	}
-
+     
+	// id-sine gore product model entity sinifindeki melumatlari silir
 	@GetMapping(path = "/delete/{id}")
 	public void deleteProductById(@PathVariable(name = "id") Integer id) {
 		boolean productExists = productDAO.findById(id).isPresent();
