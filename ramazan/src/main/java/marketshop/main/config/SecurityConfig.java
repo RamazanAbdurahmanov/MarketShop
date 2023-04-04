@@ -17,11 +17,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private DataSource dataSource;
 
 	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.inMemoryAuthentication()
+		.withUser("admin")
+		.password("{noop}12")
+		.roles("ADMIN").and()
+		.withUser("Cashier")
+		.password("{noop}12")
+		.roles("CASHIER");
+	}
+
+	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-				.antMatchers(HttpMethod.POST, "/users/**").permitAll().antMatchers(HttpMethod.GET, "/files/download/**")
-				.permitAll().anyRequest().authenticated().and().httpBasic();
-		http.headers().frameOptions().disable();
+		http.csrf().disable().authorizeRequests()
+		        
+				.antMatchers("/**").hasRole("ADMIN")
+				.and().formLogin();
+
 	}
 
 //	@Override

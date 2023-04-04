@@ -31,7 +31,7 @@ public class ProductRestController {
 	}
       
 	// yeni mehsul qeydiyyat edir(save edir)
-	@PostMapping(path = "/save-new-product")
+	@PostMapping(path = "/register-new-product")
 	public Product newProduct(@RequestBody Product product) {
 		return productDAO.save(product);
 	}
@@ -68,7 +68,7 @@ public class ProductRestController {
 	@GetMapping(path = "/delete/{id}")
 	public void deleteProductById(@PathVariable(name = "id") Integer id) {
 		boolean productExists = productDAO.findById(id).isPresent();
-		if (productExists) {
+		if (productExists) { 
 			productDAO.deleteById(id);
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
