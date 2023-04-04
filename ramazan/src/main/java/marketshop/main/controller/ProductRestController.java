@@ -16,64 +16,39 @@ import org.springframework.web.server.ResponseStatusException;
 
 import marketshop.main.dao.ProductDAO;
 import marketshop.main.entity.Product;
+import marketshop.main.service.ProductService;
 
 @RestController
 @RequestMapping(path = "/products")
 public class ProductRestController {
 
 	@Autowired
-	private ProductDAO productDAO;
+	private ProductService productService;
 
-	// product model entity sinifindekileri butun hamisini qaytarir
 	@GetMapping
 	public List<Product> getAllProducts() {
-		return productDAO.findAll();
+		return productService.findAll();
 	}
       
-	// yeni mehsul qeydiyyat edir(save edir)
 	@PostMapping(path = "/register-new-product")
 	public Product newProduct(@RequestBody Product product) {
-		return productDAO.save(product);
+		return productService.save(product);
 	}
     
-	//id-sine gore product model entity sinifindeki melumatlari qaytarir
 	@GetMapping("/{id}")
 	public Product getById(@PathVariable Integer id) {
-		return productDAO.findById(id).get();
+		return productService.findById(id);
 	}
      
-	//ide gore product model entity sinifin ichindekileri update edir
 	@PutMapping("/{id}")
 	public Product updateProduct(@PathVariable Integer id, @RequestBody Product updatedProduct) {
-		Optional<Product> optionalProduct = productDAO.findById(id);
-		if (optionalProduct.isPresent()) {
-			Product product = optionalProduct.get();
-			product.setName(updatedProduct.getName());
-			product.setBarcode(updatedProduct.getBarcode());
-			product.setPrice(updatedProduct.getPrice());
-			product.setCost(updatedProduct.getCost());
-			product.setDescription(updatedProduct.getDescription());
-			product.setRegisterDate(updatedProduct.getRegisterDate());
-			product.setUpdateDate(updatedProduct.getUpdateDate());
-			product.setQuantity(updatedProduct.getQuantity());
-			product.setPercent(updatedProduct.getPercent());
-
-			return productDAO.save(product);
-		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-		}
+		return productService.updateProduct(id, updatedProduct);
 	}
      
-	// id-sine gore product model entity sinifindeki melumatlari silir
 	@GetMapping(path = "/delete/{id}")
-	public void deleteProductById(@PathVariable(name = "id") Integer id) {
-		boolean productExists = productDAO.findById(id).isPresent();
-		if (productExists) { 
-			productDAO.deleteById(id);
-		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-		}
+	 public void deleteById(@PathVariable  Integer productId) {
+        productService.deleteById(productId);
+    }
 
 	}
 
-}
