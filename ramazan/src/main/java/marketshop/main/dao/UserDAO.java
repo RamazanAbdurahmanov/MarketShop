@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import marketshop.main.entity.User;
 
-public interface UserDAO extends JpaRepository<User, Integer>{
+
+
+public interface UserDAO extends JpaRepository<User, String>{
 
 }

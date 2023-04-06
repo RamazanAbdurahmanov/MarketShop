@@ -25,7 +25,7 @@ public class ProductService {
 	}
 	
 	//id-sine gore product model entity sinifindeki melumatlari qaytarir
-	public Product findById(Integer id) {
+	public Product findById(@RequestBody  Integer id) {
 		return productDAO.findById(id).orElse(null);
 	}
 	
@@ -65,5 +65,8 @@ public class ProductService {
 		}
 
 	}
+//	public Product findByBarcode(@PathVariable String barcode) {
+//        return productDAO.findByBarcode(barcode);
+//    }
 
 }
