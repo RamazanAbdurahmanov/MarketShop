@@ -7,5 +7,6 @@ import marketshop.main.entity.User;
 
 
 public interface UserDAO extends JpaRepository<User, String>{
+	
 
 }

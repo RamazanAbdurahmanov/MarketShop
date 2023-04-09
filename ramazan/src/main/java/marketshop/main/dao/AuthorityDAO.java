@@ -6,4 +6,7 @@ import marketshop.main.entity.Authority;
 
 public interface AuthorityDAO extends JpaRepository<Authority, Integer>{
 
+	
+
+
 }

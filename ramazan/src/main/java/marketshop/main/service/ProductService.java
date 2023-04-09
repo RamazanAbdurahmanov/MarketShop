@@ -12,9 +12,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import marketshop.main.dao.ProductDAO;
 import marketshop.main.entity.Product;
+import marketshop.main.model.SearchBarcode;
+import marketshop.main.model.SearchModel;
 
 @Service
 public class ProductService {
+	
 
 	@Autowired
 	private ProductDAO productDAO;
@@ -26,7 +29,7 @@ public class ProductService {
 	
 	//id-sine gore product model entity sinifindeki melumatlari qaytarir
 	public Product findById(@RequestBody  Integer id) {
-		return productDAO.findById(id).orElse(null);
+		return productDAO.findById(id).orElse(null); 
 	}
 	
 	// yeni mehsul qeydiyyat edir(save edir)
@@ -48,7 +51,6 @@ public class ProductService {
 			product.setUpdateDate(updatedProduct.getUpdateDate());
 			product.setQuantity(updatedProduct.getQuantity());
 			product.setPercent(updatedProduct.getPercent());
-
 			return productDAO.save(product);
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -65,8 +67,12 @@ public class ProductService {
 		}
 
 	}
-//	public Product findByBarcode(@PathVariable String barcode) {
-//        return productDAO.findByBarcode(barcode);
-//    }
-
+	//butun deyishenlere gore axtarish edir
+    public List <Product> findAllSearch(@RequestBody SearchModel search){
+  return productDAO.findAllSearchAllFields(search.getSearch());
+ }
+    
+    public List <Product> findByBarcodeSearch(@RequestBody SearchBarcode search){
+    	  return productDAO.findByBarcode(search.getSearchByBarcode());
+    	 }
 }

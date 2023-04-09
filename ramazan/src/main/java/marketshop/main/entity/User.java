@@ -10,12 +10,22 @@ import lombok.Data;
 @Component
 @Entity
 @Table(name = "users")
-@Data
+@Data  
 public class User {
     @Id
     private String username;
     private String password;
     private Boolean enabled;
+    
+    
+    public void deactivate() {
+        this.enabled = false;
+    }
+    
+    public void activate() {
+        this.enabled = true;
+    }
+    
     
 }
 

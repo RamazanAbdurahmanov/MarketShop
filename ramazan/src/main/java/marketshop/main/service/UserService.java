@@ -22,11 +22,12 @@ public class UserService {
 private UserDAO userDAO;
 
 @Autowired
-Authority authority;
+private Authority authority;
  
 
 @Autowired
-AuthorityDAO authorityDAO;
+private AuthorityDAO authorityDAO;
+
 
 //yeni kassir istifadeci yaradir
 public User cashierRegistiration(@RequestBody User user) { 
@@ -37,32 +38,27 @@ public User cashierRegistiration(@RequestBody User user) {
 	}else {
 	user.setPassword("{noop}"+user.getPassword());
 	user.setEnabled(true);
-	authority.setUsername(user.getUsername());
+	authority.setUsername(user.getUsername()); 
 	authority.setAuthority("CASHIER");
 	authorityDAO.save(authority);
 	return userDAO.save(user);
-}
+} 
 }
 	//kassiri silir
-public void deleteCashierById(@PathVariable String id) {
-	boolean cashierExists=userDAO.findById(id).isPresent();
+public void deleteCashierByUsername(@PathVariable(name = "username") String username) {
+	boolean cashierExists=userDAO.findById(username).isPresent();
 	if(cashierExists) {
-		userDAO.deleteById(id);
+		userDAO.deleteById(username);
 	}else {
 		throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 	}
 }
-// kassiri deaktiv edir
-public void deactivateCashier(@RequestBody User user) {
-	user.setEnabled(false);
-}
-//kassiri aktivleshdirir
-public void activateCashier(@RequestBody User user) {
-	user.setEnabled(true);
-}
+
 // butun kassirleri qaytarir
  public List<User> findAll() {
  return userDAO.findAll();
 }
+
+
 	
 }

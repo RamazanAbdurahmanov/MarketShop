@@ -15,37 +15,27 @@ import marketshop.main.entity.User;
 import marketshop.main.service.UserService;
 
 @RestController
-@RequestMapping(path="/users")
-@CrossOrigin(origins="*")
+@RequestMapping(path = "/users")
+@CrossOrigin(origins = "*")
 public class UserRestController {
-	
+
 	@Autowired
 	UserService userService;
-	
-	
-	@PostMapping(path="/register-new-cashier")
+
+	@PostMapping(path = "/register-new-cashier")
 	public User registerNewCashier(@RequestBody User user) {
 		return userService.cashierRegistiration(user);
-			
+
 	}
-	@GetMapping(path="/{id}")
-	public void deleteCashier(@PathVariable String Id) {
-		userService.deleteCashierById(Id);
+
+	@GetMapping(path = "/delete-cashier/{username}")
+	public void deleteCashier(@PathVariable String username) {
+		userService.deleteCashierByUsername(username);
 	}
-  @PostMapping(path="/deactivate-cashier")
-   public void deactivateYourCashier(@RequestBody User user) {
-	  userService.deactivateCashier(user);
-	  
-  }
-  @PostMapping(path="/activate-cashier")
-  public void activeYourCashier(@RequestBody User user) {
-	  userService.activateCashier(user);
-	  	  
- }
- 
-  @GetMapping
-  public List<User> getAllCashiers(){
-	  return userService.findAll();
-  }
-  
+
+	@GetMapping(path = "/get-all-cashier")
+	public List<User> getAllCashiers() {
+		return userService.findAll();
+	}
+
 }

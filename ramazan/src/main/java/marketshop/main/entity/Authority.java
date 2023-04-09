@@ -12,7 +12,7 @@ import lombok.Data;
 @Component
 @Entity
 @Table(name = "authorities")
-@Data
+@Data   
 public class Authority {
 
 	@Id
