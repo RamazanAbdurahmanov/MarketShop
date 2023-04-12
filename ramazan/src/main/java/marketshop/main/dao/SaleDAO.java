@@ -10,8 +10,6 @@ import marketshop.main.entity.Sale;
 
 public interface SaleDAO extends JpaRepository<Sale, Integer>{
 	
-	@Query(value="select*from sales where sale_date between '?1' AND '?2'",nativeQuery = true)
-	public List<Sale> findByBetweenSaleDate(Date startDate,Date endDate);
-
-
+	List<Sale> findAllBySaleDateBetween(Date startDate, Date endDate);
+	
 }

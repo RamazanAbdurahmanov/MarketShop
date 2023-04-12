@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,18 +32,20 @@ private AuthorityDAO authorityDAO;
 
 //yeni kassir istifadeci yaradir
 public User cashierRegistiration(@RequestBody User user) { 
-	Optional<User> userOptional=userDAO.findById(user.getUsername());
-	if(userOptional.isPresent()) {
-		user.setUsername("");
-		return user;
-	}else {
-	user.setPassword("{noop}"+user.getPassword());
-	user.setEnabled(true);
-	authority.setUsername(user.getUsername()); 
-	authority.setAuthority("CASHIER");
-	authorityDAO.save(authority);
-	return userDAO.save(user);
-} 
+    Optional<User> userOptional=userDAO.findById(user.getUsername());
+    if(userOptional.isPresent()) {
+        user.setUsername("");
+        return user;
+    } else {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        user.setEnabled(true);
+        authority.setUsername(user.getUsername()); 
+        authority.setAuthority("CASHIER");
+        authorityDAO.save(authority);
+        return userDAO.save(user);
+    } 
 }
 	//kassiri silir
 public void deleteCashierByUsername(@PathVariable(name = "username") String username) {
@@ -59,6 +62,30 @@ public void deleteCashierByUsername(@PathVariable(name = "username") String user
  return userDAO.findAll();
 }
 
-
-	
+ //aktiv olan useri deaktiv edir
+ public void deactivateUser(@PathVariable String id) {
+	 Optional<User> user = userDAO.findById(id);
+	   
+	   if(user.isPresent()) {
+	      if(user.get().getEnabled() == true) {
+	         user.get().setEnabled(false);
+	         userDAO.save(user.get());
+	      }
+	   } else {
+		   throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+	   }
+ }
+ //deaktiv olan useri aktiv edir
+ public void activateUser(@PathVariable String id) {
+	 Optional<User> user = userDAO.findById(id);
+	   
+	   if(user.isPresent()) {
+	      if(user.get().getEnabled() == false) {
+	         user.get().setEnabled(true);
+	         userDAO.save(user.get());
+	      }
+	   } else {
+		   throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+	   }
+}
 }

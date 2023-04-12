@@ -37,5 +37,14 @@ public class UserRestController {
 	public List<User> getAllCashiers() {
 		return userService.findAll();
 	}
-
+     @PostMapping(path="/deactivate-user/{id}")
+	 public void deactivateUser(@PathVariable String id) {
+		    userService.deactivateUser(id);
+		 }
+	 
+     @PostMapping(path="/activate-user/{id}")
+	 public void activateUser(@PathVariable String id) {
+		    userService.activateUser(id);
+		 }
+	
 }

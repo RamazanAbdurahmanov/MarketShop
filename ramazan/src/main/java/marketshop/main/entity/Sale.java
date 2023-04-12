@@ -23,6 +23,8 @@ public class Sale {
     @ManyToOne
     private Product product;
     
+    private String cashier;
+    
     private Date saleDate;
     
     private Integer quantity;

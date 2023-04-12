@@ -18,13 +18,7 @@ public class User {
     private Boolean enabled;
     
     
-    public void deactivate() {
-        this.enabled = false;
-    }
-    
-    public void activate() {
-        this.enabled = true;
-    }
+   
     
     
 }
