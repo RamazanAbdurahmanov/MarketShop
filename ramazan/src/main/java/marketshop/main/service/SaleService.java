@@ -1,7 +1,6 @@
 package marketshop.main.service;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,41 +23,41 @@ public class SaleService {
 	@Autowired
 	private ProductDAO productDAO;
 
-	public List<Sale> getSalesByDateRange(Date startDate, Date endDate) {
+	public List<Sale> getSalesByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
 		return saleDAO.findAllBySaleDateBetween(startDate, endDate);
 	}
 
-	private Map<Integer, Integer> cart = new HashMap<>(); // səbətə məhsulların id və sayını saxlayacaq map
+	private Map<String, Integer> cart = new HashMap<>(); // səbətə məhsulların id və sayını saxlayacaq map
 
-	public void addToCart(Integer productId, Integer quantity) {
-		Product product = productDAO.findById(productId).orElse(null);
+	public void addToCart(String barcode, Integer quantity) {
+		Product product = getProductByBarcode(barcode);
 		if (product != null && product.getQuantity() >= quantity) { // məhsul var və sərf ediləcək say sərhəddən azdırsa
-			Integer existingQuantity = cart.get(productId); // əgər bu məhsulun səbətdə olduğunu yoxlayaq
+			Integer existingQuantity = cart.get(barcode); // əgər bu məhsulun səbətdə olduğunu yoxlayaq
 			if (existingQuantity != null) {
 				quantity += existingQuantity; // səbətdə varsa sayını artırırıq
 			}
-			cart.put(productId, quantity); // yeni məhsulu və ya artırılmış sayını səbətə əlavə edirik
+			cart.put(barcode, quantity); // yeni məhsulu və ya artırılmış sayını səbətə əlavə edirik
 		}
 	}
 
-	public void removeFromCart(Integer productId, Integer quantity) {
-		Integer existingQuantity = cart.get(productId);
+	public void removeFromCart(String barcode, Integer quantity) {
+		Integer existingQuantity = cart.get(barcode);
 		if (existingQuantity != null) {
 			existingQuantity -= quantity;
 			if (existingQuantity > 0) {
-				cart.put(productId, existingQuantity);
+				cart.put(barcode, existingQuantity);
 			} else {
-				cart.remove(productId);
+				cart.remove(barcode);
 			}
 		}
 	}
 
 	public List<Product> viewCart() {
 		List<Product> productsInCart = new ArrayList<>();
-		for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
-			Integer productId = entry.getKey();
+		for (Map.Entry<String, Integer> entry : cart.entrySet()) {
+			String barcode = entry.getKey();
 			Integer quantity = entry.getValue();
-			Product product = productDAO.findById(productId).orElse(null);
+			Product product = getProductByBarcode(barcode);
 			if (product != null) {
 				product.setQuantity(quantity); // məhsulun səbətdəki sayını məhsul obyektində saxlayırıq
 				productsInCart.add(product);
@@ -70,17 +69,18 @@ public class SaleService {
 	public void checkout() {
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = loggedInUser.getName();
-
-		for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
-			Integer productId = entry.getKey();
+		LocalDateTime ldt=LocalDateTime.now();
+		
+		for (Map.Entry<String, Integer> entry : cart.entrySet()) {
+			String barcode = entry.getKey();
 			Integer quantity = entry.getValue();
-			Product product = productDAO.findById(productId).orElse(null);
+			Product product = getProductByBarcode(barcode);
 			if (product != null && product.getQuantity() >= quantity) {
 				product.setQuantity(product.getQuantity() - quantity);
 				productDAO.save(product);
 
 				Sale sale = new Sale();
-				sale.setSaleDate(LocalDate.now());
+				sale.setSaleDate(ldt);
 				sale.setCashier(username);
 				sale.setProduct(product);
 				sale.setQuantity(quantity);
@@ -90,5 +90,13 @@ public class SaleService {
 		}
 		cart.clear();
 	}
+	
+	private Product getProductByBarcode(String barcode) {
+		List<Product> productList = productDAO.findByBarcode(barcode);
+		if (!productList.isEmpty()) {
+			return productList.get(0);
 
+}
+		return null;
+	}
 }

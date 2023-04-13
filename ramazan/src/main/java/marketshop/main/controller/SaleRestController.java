@@ -1,7 +1,6 @@
 package marketshop.main.controller;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,22 +29,22 @@ public class SaleRestController {
 	// qeyd olunan tarix araliginda edilen satishlari qaytarir
 	@GetMapping
 	public List<Sale> getSalesByDateRange(
-			@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
-		Date start = Date.valueOf(startDate);
-		Date end = Date.valueOf(endDate);
+			@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime startDate,
+			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime endDate) {
+		LocalDateTime start = LocalDateTime.from(startDate);
+		LocalDateTime end = LocalDateTime.from(endDate);
 		return saleService.getSalesByDateRange(start, end);
 	}
 
 	@PostMapping("/add-to-cart")
-	public ResponseEntity<Void> addToCart(@RequestParam Integer productId, @RequestParam Integer quantity) {
-		saleService.addToCart(productId, quantity);
+	public ResponseEntity<Void> addToCart(@RequestParam String barcode, @RequestParam Integer quantity) {
+		saleService.addToCart(barcode, quantity);
 		return ResponseEntity.ok().build();
 	}
 
 	@PostMapping("/remove-from-cart")
-	public ResponseEntity<Void> removeFromCart(@RequestParam Integer productId, @RequestParam Integer quantity) {
-		saleService.removeFromCart(productId, quantity);
+	public ResponseEntity<Void> removeFromCart(@RequestParam String barcode, @RequestParam Integer quantity) {
+		saleService.removeFromCart(barcode, quantity);
 		return ResponseEntity.ok().build();
 	}
 
