@@ -1,6 +1,6 @@
 package marketshop.main.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +24,7 @@ public class Sale {
 
 	private String cashier;
 
-	private LocalDateTime saleDate;
+	private LocalDate saleDate;
 
 	private Integer quantity;
 

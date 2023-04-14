@@ -27,10 +27,7 @@ public class ProductService {
 		return productDAO.findAll();
 	}
 	
-	//id-sine gore product model entity sinifindeki melumatlari qaytarir
-	public Product findById(@RequestBody  Integer id) {
-		return productDAO.findById(id).orElse(null); 
-	}
+	
 	
 	// yeni mehsul qeydiyyat edir(save edir)
 	public Product save(@RequestBody Product product) {

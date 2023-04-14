@@ -35,10 +35,7 @@ public class ProductRestController {
 		return productService.save(product); 
 	}
 
-	@GetMapping("/getproduct-byid/{id}")
-	public Product getById(@PathVariable Integer id) {
-		return productService.findById(id);
-	}
+	
 
 	@PutMapping("/update-product/{id}")
 	public Product updateProduct(@PathVariable Integer id, @RequestBody Product updatedProduct) {

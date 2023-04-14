@@ -1,6 +1,6 @@
 package marketshop.main.service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +23,9 @@ public class SaleService {
 	@Autowired
 	private ProductDAO productDAO;
 
-	public List<Sale> getSalesByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
-		return saleDAO.findAllBySaleDateBetween(startDate, endDate);
-	}
+	 public List<Sale> getSalesBetweenDates(LocalDate startDate, LocalDate endDate) {
+	        return saleDAO.findBySaleDateBetween(startDate, endDate);
+	    }
 
 	private Map<String, Integer> cart = new HashMap<>(); // səbətə məhsulların id və sayını saxlayacaq map
 
@@ -69,7 +69,7 @@ public class SaleService {
 	public void checkout() {
 		Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = loggedInUser.getName();
-		LocalDateTime ldt=LocalDateTime.now();
+		LocalDate ld=LocalDate.now();
 		
 		for (Map.Entry<String, Integer> entry : cart.entrySet()) {
 			String barcode = entry.getKey();
@@ -80,7 +80,7 @@ public class SaleService {
 				productDAO.save(product);
 
 				Sale sale = new Sale();
-				sale.setSaleDate(ldt);
+				sale.setSaleDate(ld);
 				sale.setCashier(username);
 				sale.setProduct(product);
 				sale.setQuantity(quantity);

@@ -1,6 +1,6 @@
 package marketshop.main.controller;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +27,20 @@ public class SaleRestController {
 	SaleService saleService;
 
 	// qeyd olunan tarix araliginda edilen satishlari qaytarir
-	@GetMapping
-	public List<Sale> getSalesByDateRange(
-			@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime startDate,
-			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime endDate) {
-		LocalDateTime start = LocalDateTime.from(startDate);
-		LocalDateTime end = LocalDateTime.from(endDate);
-		return saleService.getSalesByDateRange(start, end);
+//	@GetMapping
+//	public List<Sale> getSalesByDateRange(
+//			@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime startDate,
+//			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime endDate) {
+//		LocalDateTime start = LocalDateTime.from(startDate);
+//		LocalDateTime end = LocalDateTime.from(endDate);
+//		return saleService.getSalesByDateRange(start, end);
+//	}
+
+	@GetMapping("/between-dates")
+	public List<Sale> getSalesBetweenDates(
+			@RequestParam("start-date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+			@RequestParam("end-date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+		return saleService.getSalesBetweenDates(startDate, endDate);
 	}
 
 	@PostMapping("/add-to-cart")
