@@ -21,7 +21,7 @@ public class Sale {
 
 	@ManyToOne
 	private Product product;
-
+	private String productName;
 	private String cashier;
 
 	private LocalDate saleDate;
@@ -30,5 +30,4 @@ public class Sale {
 
 	private Double totalPrice;
 
-	 
 }
