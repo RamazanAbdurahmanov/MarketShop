@@ -26,15 +26,6 @@ public class SaleRestController {
 	@Autowired
 	SaleService saleService;
 
-	// qeyd olunan tarix araliginda edilen satishlari qaytarir
-//	@GetMapping
-//	public List<Sale> getSalesByDateRange(
-//			@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime startDate,
-//			@RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime endDate) {
-//		LocalDateTime start = LocalDateTime.from(startDate);
-//		LocalDateTime end = LocalDateTime.from(endDate);
-//		return saleService.getSalesByDateRange(start, end);
-//	}
 
 	@GetMapping("/between-dates")
 	public List<Sale> getSalesBetweenDates(

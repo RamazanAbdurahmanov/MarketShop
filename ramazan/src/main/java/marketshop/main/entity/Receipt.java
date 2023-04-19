@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,9 +23,9 @@ public class Receipt {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private LocalDate saleDate;
-	@Column(name = "total_price")
-	private double totalPrice;
-	private String product;
+	private double totalAmount;
+	
+	private String productName;
 	private Integer productCount;
 	private String cashier;
 	@OneToMany(cascade = CascadeType.ALL)

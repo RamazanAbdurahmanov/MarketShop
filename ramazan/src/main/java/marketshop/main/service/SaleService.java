@@ -78,7 +78,8 @@ public class SaleService {
 	    List<Sale> sales = new ArrayList<>();
 
 	    double totalPrice = 0;
-
+        int soldProductCount=0;
+        List<String> names= new ArrayList<>();
 
 		for (Map.Entry<String, Integer> entry : cart.entrySet()) {
 			String barcode = entry.getKey();
@@ -93,18 +94,29 @@ public class SaleService {
 				sale.setCashier(username);
 				sale.setProduct(product);
 				sale.setQuantity(quantity);
+				sale.setBarcode(product.getBarcode());
 				sale.setTotalPrice(product.getPrice() * quantity);
-				sale.setProductName(product.getName());
+				sale.setProductName(product.getName()); 
+				names.add(sale.getProductName());
 				saleDAO.save(sale);
 				
-				 sales.add(sale);
+				sales.add(sale);
 		        totalPrice += sale.getTotalPrice();
+		        soldProductCount+=sale.getQuantity();
 				receipt.setSaleDate(ld);
 	    	    receipt.setCashier(username);
-	    	    receipt.setProduct(product.getName());
-	    	    receipt.setTotalPrice(totalPrice);
+	    	    String productName = product.getName();
+	    	    
+	            if (receipt.getProductName() == null ) {
+	                receipt.setProductName(productName);
+	            } else {
+	                receipt.setProductName(receipt.getProductName() + ":"+receipt.getProductCount() + ", " + productName+":"+quantity);
+	            }
+	    	    
+	    	    
+	    	    receipt.setTotalAmount(totalPrice);
 	    	    receipt.setSales(sales);
-	    	    receipt.setProductCount(quantity);
+	    	    receipt.setProductCount(soldProductCount);
 	    		receiptDAO.save(receipt);
 
 	    	    

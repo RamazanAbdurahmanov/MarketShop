@@ -37,15 +37,15 @@ public User cashierRegistiration(@RequestBody User user) {
         user.setUsername("");
         return user;
     } else {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encodedPassword = encoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        user.setEnabled(true);
-        authority.setUsername(user.getUsername()); 
-        authority.setAuthority("CASHIER");
-        authorityDAO.save(authority);
-        return userDAO.save(user);
+       
     } 
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    user.setPassword("{bcrypt}"+encoder.encode(user.getPassword())) ;
+    user.setEnabled(true);
+    authority.setUsername(user.getUsername()); 
+    authority.setAuthority("CASHIER");
+    authorityDAO.save(authority);
+    return userDAO.save(user);
 }
 	//kassiri silir
 public void deleteCashierByUsername(@PathVariable(name = "username") String username) {
@@ -63,8 +63,8 @@ public void deleteCashierByUsername(@PathVariable(name = "username") String user
 }
 
  //aktiv olan useri deaktiv edir
- public void deactivateUser(@PathVariable String id) {
-	 Optional<User> user = userDAO.findById(id);
+ public void deactivateUser(@PathVariable String username) {
+	 Optional<User> user = userDAO.findById(username);
 	   
 	   if(user.isPresent()) {
 	      if(user.get().getEnabled() == true) {
@@ -76,8 +76,8 @@ public void deleteCashierByUsername(@PathVariable(name = "username") String user
 	   }
  }
  //deaktiv olan useri aktiv edir
- public void activateUser(@PathVariable String id) {
-	 Optional<User> user = userDAO.findById(id);
+ public void activateUser(@PathVariable String username) {
+	 Optional<User> user = userDAO.findById(username);
 	   
 	   if(user.isPresent()) {
 	      if(user.get().getEnabled() == false) {

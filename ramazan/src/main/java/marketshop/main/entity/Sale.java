@@ -21,9 +21,9 @@ public class Sale {
 
 	@ManyToOne
 	private Product product;
-	private String productName;
-	private String cashier;
-
+	private String  productName;
+	private String  cashier;
+    private String  barcode;
 	private LocalDate saleDate;
 
 	private Integer quantity;
