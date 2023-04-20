@@ -9,10 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "sales")
 public class Sale {
 	@Id
@@ -25,7 +29,6 @@ public class Sale {
 	private String  cashier;
     private String  barcode;
 	private LocalDate saleDate;
-
 	private Integer quantity;
 
 	private Double totalPrice;
