@@ -59,4 +59,11 @@ public class SaleRestController {
 		saleService.checkout();
 		return ResponseEntity.ok().build();
 	}
+	
+	@PreAuthorize(value = "hasAuthority('ADMIN')")
+	@PostMapping("/returned")
+	public ResponseEntity<Void> returned(String barcode, Integer quantity) {
+		saleService.returnProduct(barcode, quantity);
+		return ResponseEntity.ok().build();
+	}
 }

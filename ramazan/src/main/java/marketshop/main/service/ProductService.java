@@ -1,5 +1,6 @@
 package marketshop.main.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +23,11 @@ public class ProductService {
 	@Autowired
 	private ProductDAO productDAO;
 	
+	LocalDateTime ldt=LocalDateTime.now();
+	
 	// product model entity sinifindekileri butun hamisini qaytarir
 	public List<Product> findAll() {
+		
 		return productDAO.findAll();
 	}
 	
@@ -31,11 +35,14 @@ public class ProductService {
 	
 	// yeni mehsul qeydiyyat edir(save edir)
 	public Product save(@RequestBody Product product) {
+		product.setPercent((product.getPrice()-product.getCost())/product.getCost()*100);
+		product.setRegisterDate(ldt);
 		return productDAO.save(product);
 	}
 	
 	//ide gore product model entity sinifin ichindekileri update edir
 	public Product updateProduct(@PathVariable Integer id, @RequestBody Product updatedProduct) {
+		
 		Optional<Product> optionalProduct = productDAO.findById(id);
 		if (optionalProduct.isPresent()) {
 			Product product = optionalProduct.get();
@@ -45,9 +52,8 @@ public class ProductService {
 			product.setCost(updatedProduct.getCost());
 			product.setDescription(updatedProduct.getDescription());
 			product.setRegisterDate(updatedProduct.getRegisterDate());
-			product.setUpdateDate(updatedProduct.getUpdateDate());
+			product.setUpdateDate(ldt);
 			product.setQuantity(updatedProduct.getQuantity());
-			product.setPercent(updatedProduct.getPercent());
 			return productDAO.save(product);
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);

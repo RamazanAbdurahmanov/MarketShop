@@ -10,4 +10,5 @@ import marketshop.main.entity.Sale;
 public interface SaleDAO extends JpaRepository<Sale, Integer>{
 	
 	 List<Sale> findBySaleDateBetween(LocalDate startDate, LocalDate endDate);	
+	 public void getSaleById(Integer id);
 }

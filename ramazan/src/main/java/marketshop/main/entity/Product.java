@@ -1,6 +1,6 @@
 package marketshop.main.entity;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,10 +37,10 @@ public class Product {
 	private String description;
 	
     
-	private Date registerDate;
+	private LocalDateTime registerDate;
     
    
-	private Date updateDate;
+	private LocalDateTime updateDate;
 	
 	private Integer quantity;
 	
