@@ -27,20 +27,18 @@ public class SaleService {
 	@Autowired
 	ReceiptDAO receiptDAO;
 
-	public List<Sale> getSalesBetweenDates(LocalDate startDate, LocalDate endDate) {
-		return saleDAO.findBySaleDateBetween(startDate, endDate);
-	}
+	
 
-	private Map<String, Integer> cart = new HashMap<>(); // səbətə məhsulların id və sayını saxlayacaq map
+	private Map<String, Integer> cart = new HashMap<>(); // səbətə məhsulların id və sayını saxlayan mapdi
 
 	public void addToCart(String barcode, Integer quantity) {
 		Product product = getProductByBarcode(barcode);
-		if (product != null && product.getQuantity() >= quantity) { // məhsul var və sərf ediləcək say sərhəddən azdırsa
-			Integer existingQuantity = cart.get(barcode); // əgər bu məhsulun səbətdə olduğunu yoxlayaq
+		if (product != null && product.getQuantity() >= quantity) { // məhsul var və sərf ediləcək say limitden azdırsa
+			Integer existingQuantity = cart.get(barcode); // məhsulun səbətdə olduğunu yoxlayaq
 			if (existingQuantity != null) {
 				quantity += existingQuantity; // səbətdə varsa sayını artırırıq
 			}
-			cart.put(barcode, quantity); // yeni məhsulu və ya artırılmış sayını səbətə əlavə edirik
+			cart.put(barcode, quantity); // yeni ki,məhsulu və ya artırılmış sayını səbətə əlavə edirik
 		}
 	}
 
@@ -140,4 +138,7 @@ public class SaleService {
 		}
 		return null;
 	}
+	
+	
+	
 }
