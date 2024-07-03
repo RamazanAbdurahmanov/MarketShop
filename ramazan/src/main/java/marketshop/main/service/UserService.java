@@ -31,7 +31,7 @@ private AuthorityDAO authorityDAO;
 
 
 //yeni kassir istifadeci yaradir
-public User cashierRegistiration(@RequestBody User user) { 
+public User cashierRegistiration(User user) {
     Optional<User> userOptional=userDAO.findById(user.getUsername());
     if(userOptional.isPresent()) {
         user.setUsername("");
@@ -48,7 +48,7 @@ public User cashierRegistiration(@RequestBody User user) {
     return userDAO.save(user);
 }
 	//kassiri silir
-public void deleteCashierByUsername(@PathVariable(name = "username") String username) {
+public void deleteCashierByUsername(String username) {
 	boolean cashierExists=userDAO.findById(username).isPresent();
 	if(cashierExists) {
 		userDAO.deleteById(username);
@@ -63,7 +63,7 @@ public void deleteCashierByUsername(@PathVariable(name = "username") String user
 }
 
  //aktiv olan useri deaktiv edir
- public void deactivateUser(@PathVariable String username) {
+ public void deactivateUser(String username) {
 	 Optional<User> user = userDAO.findById(username);
 	   
 	   if(user.isPresent()) {
@@ -76,7 +76,7 @@ public void deleteCashierByUsername(@PathVariable(name = "username") String user
 	   }
  }
  //deaktiv olan useri aktiv edir
- public void activateUser(@PathVariable String username) {
+ public void activateUser(String username) {
 	 Optional<User> user = userDAO.findById(username);
 	   
 	   if(user.isPresent()) {

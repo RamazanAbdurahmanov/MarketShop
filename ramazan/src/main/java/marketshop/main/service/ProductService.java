@@ -7,8 +7,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import marketshop.main.dao.ProductDAO;
@@ -34,14 +32,14 @@ public class ProductService {
 	
 	
 	// yeni mehsul qeydiyyat edir(save edir)
-	public Product save(@RequestBody Product product) {
+	public Product save(Product product) {
 		product.setPercent((product.getPrice()-product.getCost())/product.getCost()*100);
 		product.setRegisterDate(ldt);
 		return productDAO.save(product);
 	}
 	
 	//ide gore product model entity sinifin ichindekileri update edir
-	public Product updateProduct(@PathVariable Integer id, @RequestBody Product updatedProduct) {
+	public Product updateProduct(Integer id, Product updatedProduct) {
 		
 		Optional<Product> optionalProduct = productDAO.findById(id);
 		if (optionalProduct.isPresent()) {
@@ -61,7 +59,7 @@ public class ProductService {
 	}
 
 	// id-sine gore product model entity sinifindeki melumatlari silir
-	public void deleteById(@PathVariable(name = "id") Integer id) {
+	public void deleteById(Integer id) {
 		boolean productExists = productDAO.findById(id).isPresent();
 		if (productExists) {
 			productDAO.deleteById(id);
@@ -71,11 +69,11 @@ public class ProductService {
 
 	}
 	//butun deyishenlere gore axtarish edir
-    public List <Product> findAllSearch(@RequestBody SearchModel search){
+    public List <Product> findAllSearch(SearchModel search){
   return productDAO.findAllSearchAllFields(search.getSearch());
  }
     
-    public List <Product> findByBarcodeSearch(@RequestBody SearchBarcode search){
+    public List <Product> findByBarcodeSearch(SearchBarcode search){
     	  return productDAO.findByBarcode(search.getSearchByBarcode());
     	 }
 }
