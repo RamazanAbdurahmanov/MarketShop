@@ -3,6 +3,7 @@ package marketshop.main.service;
 import java.util.List;
 import java.util.Optional;
 
+import marketshop.main.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -53,7 +54,7 @@ public void deleteCashierByUsername(String username) {
 	if(cashierExists) {
 		userDAO.deleteById(username);
 	}else {
-		throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		throw new UserNotFoundException("Istifadeci tapilmadi");
 	}
 }
 
@@ -72,7 +73,7 @@ public void deleteCashierByUsername(String username) {
 	         userDAO.save(user.get());
 	      }
 	   } else {
-		   throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		   throw new UserNotFoundException("Istifadeci tapilmadi");
 	   }
  }
  //deaktiv olan useri aktiv edir
@@ -85,7 +86,7 @@ public void deleteCashierByUsername(String username) {
 	         userDAO.save(user.get());
 	      }
 	   } else {
-		   throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		   throw new UserNotFoundException("Istifadeci tapilmadi");
 	   }
 }
 }
